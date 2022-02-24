@@ -31,10 +31,19 @@
 ;;
 ;; Commands:
 ;;
-;; dired-hist-mode       : Turn on dired history tracking
-;; dired-hist-go-back    : Go back in dired history
-;; dired-hist-go-forward : Go forward in dired history
+;; `dired-hist-mode'       : Turn on dired history tracking
+;; `dired-hist-go-back'    : Go back in dired history
+;; `dired-hist-go-forward' : Go forward in dired history
 ;;
+;; Usage:
+;;
+;; Bind the two history commands to suitable keybindings in dired-mode and call
+;; `dired-hist-mode':
+;;
+;;   (define-key dired-mode-map "l" #'dired-hist-go-back)
+;;   (define-key dired-mode-map "r" #'dired-hist-go-forward)
+;;   (with-eval-after-load 'dired (dired-hist-mode 1))
+;;    
 ;; Customization:
 ;;
 ;; There are no customization options at this time.
