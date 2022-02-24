@@ -90,6 +90,7 @@
   (unless (equal default-directory (cdr-safe (car-safe dired-hist-stack)))
     (push (cons (point-marker) default-directory) dired-hist-stack)))
 
+;;;###autoload
 (define-minor-mode dired-hist-mode
   "Keep track of visited dired buffers and switch between them."
   :global t
