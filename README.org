@@ -7,7 +7,8 @@ To use it, bind =dired-hist-go-back= and =dired-hist-go-forward= to suitable key
 #+BEGIN_SRC emacs-lisp
   (define-key dired-mode-map "l" #'dired-hist-go-back)
   (define-key dired-mode-map "r" #'dired-hist-go-forward)
-  (with-eval-after-load 'dired (dired-hist-mode 1))
+  (require 'dired-hist)
+  (dired-hist-mode 1)
 #+END_SRC
 
 =l= and =r= are the defaults for =info-mode=.
