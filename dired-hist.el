@@ -58,8 +58,7 @@
   (when dired-hist-stack
     (push (cons (point-marker) default-directory)
           dired-hist-forward-stack)
-    (dired-hist--visit (pop dired-hist-stack)))
-  (dired-hist--update))
+    (dired-hist--visit (car dired-hist-stack))))
 
 (defun dired-hist-go-forward ()
   "Go forward in the visited dired buffer history."
