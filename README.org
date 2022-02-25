@@ -1,16 +1,16 @@
 #+title: dired-hist
 
-=dired-hist= is a minor mode for Emacs that keeps track of visited dired buffers and lets you go back and forwards across them. This is similar to the facility provided in other Emacs major modes, such as Info and EWW.
+=dired-hist= is a minor mode for Emacs that keeps track of visited dired buffers and lets you go back and forwards across them. This is similar to the facility provided in other Emacs major modes, such as Info, help and EWW.
 
 To use it, bind =dired-hist-go-back= and =dired-hist-go-forward= to suitable keys and turn on =dired-hist-mode=.
 
 #+BEGIN_SRC emacs-lisp
+  (require 'dired-hist)
   (define-key dired-mode-map "l" #'dired-hist-go-back)
   (define-key dired-mode-map "r" #'dired-hist-go-forward)
-  (require 'dired-hist)
   (dired-hist-mode 1)
 #+END_SRC
 
-=l= and =r= are the defaults for =info-mode=.
+=l= and =r= are the defaults for =info-mode=, =help-mode= and =eww=.
 
-The code is very simple (under 60 lines). There are no customization options yet.
+The code is very simple (under 50 lines). There are no customization options yet.
