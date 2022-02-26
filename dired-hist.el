@@ -1,4 +1,4 @@
-;;; dired-hist.el --- Traverse dired history. -*- lexical-binding: t -*-
+;;; dired-hist.el --- Traverse Dired buffer history -*- lexical-binding: t -*-
 ;; Copyright (C) 2022  Karthik Chikmagalur
 
 ;; Author: Karthik Chikmagalur <karthik.chikmagalur@gmail.com>
@@ -25,15 +25,15 @@
 ;;; Commentary:
 
 ;; dired-hist is a minor mode for Emacs that keeps track of visited
-;; dired buffers and lets you go back and forwards across them. This is
+;; Dired buffers and lets you go back and forwards across them. This is
 ;; similar to the facility provided in other Emacs major modes, such as
 ;; Info and EWW.
 ;;
 ;; Commands:
 ;;
-;; `dired-hist-mode'       : Turn on dired history tracking
-;; `dired-hist-go-back'    : Go back in dired history
-;; `dired-hist-go-forward' : Go forward in dired history
+;; `dired-hist-mode'       : Turn on Dired history tracking
+;; `dired-hist-go-back'    : Go back in Dired history
+;; `dired-hist-go-forward' : Go forward in Dired history
 ;;
 ;; Usage:
 ;;
@@ -52,17 +52,16 @@
 (require 'dired)
 
 (defvar dired-hist-stack nil
-  "A stack of previously visited dired buffers.")
+  "The stack of previously visited Dired buffers.")
 
 (defvar dired-hist-forward-stack nil
-  "Forward history of previously visited dired buffers.")
+  "Forward history of previously visited Dired buffers.")
 
 (defun dired-hist-go-back ()
-  "Go backward in the visited dired buffer history."
+  "Go backward in the visited Dired buffer history."
   (interactive)
-  (when (and dired-hist-stack
-             (equal (cdr-safe (car dired-hist-stack))
-                    default-directory))
+  (when (equal (cdr-safe (car-safe dired-hist-stack))
+               default-directory)
     (pop dired-hist-stack))
   (when dired-hist-stack
     (push (cons (point-marker) default-directory)
@@ -70,13 +69,16 @@
     (dired-hist--visit (car dired-hist-stack))))
 
 (defun dired-hist-go-forward ()
-  "Go forward in the visited dired buffer history."
+  "Go forward in the visited Dired buffer history."
   (interactive)
   (when dired-hist-forward-stack
     (dired-hist--update)
     (dired-hist--visit (pop dired-hist-forward-stack))))
 
 (defun dired-hist--visit (item)
+  "Visit Dired buffer or directory specified in ITEM.
+
+ITEM is a cons cell of the form (marker . directory)."
   (let* ((last-buffer (marker-buffer (car item)))
          (alive-p (buffer-live-p last-buffer))
          (win (and alive-p
@@ -87,12 +89,14 @@
      (t (dired (cdr item))))))
 
 (defun dired-hist--update ()
+  "Update the Dired buffer history stack."
   (unless (equal default-directory (cdr-safe (car-safe dired-hist-stack)))
     (push (cons (point-marker) default-directory) dired-hist-stack)))
 
 ;;;###autoload
 (define-minor-mode dired-hist-mode
-  "Keep track of visited dired buffers and switch between them."
+  "Keep track of visited Dired buffers and switch between them."
+  :group 'dired-hist
   :global t
   :lighter nil
   (if dired-hist-mode
