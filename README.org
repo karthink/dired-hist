@@ -11,6 +11,6 @@ To use it, bind =dired-hist-go-back= and =dired-hist-go-forward= to suitable key
   (dired-hist-mode 1)
 #+END_SRC
 
-=l= and =r= are the defaults for =info-mode=, =help-mode= and =eww=.
+=l= and =r= are the defaults for =info-mode=, =help-mode= and =eww=, as well as for external packages like =pdf-tools=.
 
 The code is very simple (under 50 lines). There are no customization options yet.
