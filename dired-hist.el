@@ -57,23 +57,25 @@
 (defvar dired-hist-forward-stack nil
   "Forward history of previously visited Dired buffers.")
 
+(defun dired-hist--match (stack)
+  (equal (cdr-safe (car-safe stack)) default-directory))
+
 (defun dired-hist-go-back ()
   "Go backward in the visited Dired buffer history."
   (interactive)
-  (when (equal (cdr-safe (car-safe dired-hist-stack))
-               default-directory)
-    (pop dired-hist-stack))
-  (when dired-hist-stack
-    (push (cons (point-marker) default-directory)
-          dired-hist-forward-stack)
+  (dired-hist--update)
+  (when-let ((_ (cdr-safe dired-hist-stack))
+             (elm (pop dired-hist-stack)))
+    (unless (dired-hist--match dired-hist-forward-stack)
+      (push elm dired-hist-forward-stack))
     (dired-hist--visit (car dired-hist-stack))))
 
 (defun dired-hist-go-forward ()
   "Go forward in the visited Dired buffer history."
   (interactive)
   (when dired-hist-forward-stack
-    (dired-hist--update)
-    (dired-hist--visit (pop dired-hist-forward-stack))))
+    (dired-hist--visit (pop dired-hist-forward-stack))
+    (dired-hist--update)))
 
 (defun dired-hist--visit (item)
   "Visit Dired buffer or directory specified in ITEM.
@@ -90,7 +92,7 @@ ITEM is a cons cell of the form (marker . directory)."
 
 (defun dired-hist--update ()
   "Update the Dired buffer history stack."
-  (unless (equal default-directory (cdr-safe (car-safe dired-hist-stack)))
+  (unless (dired-hist--match dired-hist-stack)
     (push (cons (point-marker) default-directory) dired-hist-stack)))
 
 ;;;###autoload
